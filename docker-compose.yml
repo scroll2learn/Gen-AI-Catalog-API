@@ -1,0 +1,74 @@
+version: '3.3'
+
+services:
+
+  catalog-app:
+    build:
+      context: .
+      dockerfile: Dockerfile_local
+      args:
+        - TOKEN=${TOKEN} 
+    volumes:
+      - .:/usr/src/app
+      - $HOME/.gcp/:/etc/gcp/
+      - ./sample_db.sql:/etc/sample_db/sample_db.sql
+
+    ports:
+      - 8011:8011
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - AUTHOR_BASE_URL=${AUTHOR_BASE_URL}
+      - GITHUB_PROVIDER_BASE_URL=${GITHUB_PROVIDER_BASE_URL}
+      - GITLAB_PROVIDER_BASE_URL=${GITLAB_PROVIDER_BASE_URL}
+      - AZURE_REPOS_PROVIDER_BASE_URL=${AZURE_REPOS_PROVIDER_BASE_URL}
+      - BITBUCKET_PROVIDER_BASE_URL=${BITBUCKET_PROVIDER_BASE_URL}
+      - DECRYPTION_KEY=${DECRYPTION_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+      - PROJECT_LOCATION=${PROJECT_LOCATION}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+      - CONNECTOR_PREFIX=${CONNECTOR_PREFIX}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - CLOUD_TYPE=${CLOUD_TYPE}
+      - TOKEN=${TOKEN}
+      - OWNER=${OWNER}
+      - REPO=${REPO}
+      - SAMPLE_DB=${SAMPLE_DB}
+      - CELERY_BROKER_PASSWORD=${CELERY_BROKER_PASSWORD}
+      - BH_APP_BUCKET=${BH_APP_BUCKET}
+      - SCHEMA_FILE_PATH=${SCHEMA_FILE_PATH}
+      - BH_AI_AGENT_URL=${BH_AI_AGENT_URL}
+      - BH_MONITER_URL=${BH_MONITER_URL}
+      - PIPELINE_ENGINE_VERSION=${PIPELINE_ENGINE_VERSION}
+    networks:
+      - shared_network
+    depends_on:
+      - catalog-db
+
+  catalog-db:
+    image: ankane/pgvector
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - shared_network
+
+volumes:
+  postgres_data:
+
+networks:
+  shared_network:
+    external: true

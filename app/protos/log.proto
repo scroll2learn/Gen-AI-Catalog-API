@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package log;
+
+service LogService {
+  rpc StreamLogs (LogRequest) returns (stream LogResponse);
+}
+
+message LogRequest {
+  string pipeline_name = 1;
+}
+
+message LogResponse {
+  string log_line = 1;
+}

@@ -1,0 +1,274 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "SimpleHttpOperator"
+            ],
+            "description": "Type of the operator",
+            "ui_properties": {
+                "module_name": "Sensor",
+                "color": "#07A260",
+                "icon": "/assets/flow/Sensor.svg"
+            }
+        },
+        "task_id": {
+            "type": "string",
+            "description": "The task ID",
+            "ui_properties": {
+                "property_name": "Task Id",
+                "property_key": "task_id",
+                "ui_type": "text",
+                "order": 1,
+                "spancol": 1,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "http_conn_id": {
+            "type": "string",
+            "description": "The HTTP connection to run the operator against",
+            "ui_properties": {
+                "property_name": "HTTP connection ID",
+                "property_key": "http_conn_id",
+                "ui_type": "dropdown",
+                "order": 2,
+                "spancol": 1,
+                "mandatory": true,
+                "default": "options[0].value",
+                "endpoint": "{catalog_base_url}/api/v1/environment/connections/{env_id}/http_connections",
+                "group_key": "property"
+            }
+        },
+        "endpoint": {
+            "type": "string",
+            "description": "The relative part of the full URL",
+            "ui_properties": {
+                "property_name": "Endpoint",
+                "property_key": "endpoint",
+                "ui_type": "text",
+                "order": 3,
+                "spancol": 1,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "method": {
+            "type": "string",
+            "enum": [
+                "GET",
+                "POST",
+                "PUT"
+            ],
+            "description": "The HTTP method to use",
+            "ui_properties": {
+                "property_name": "Method",
+                "property_key": "method",
+                "ui_type": "enum",
+                "order": 4,
+                "spancol": 1,
+                "mandatory": true,
+                "default": "GET",
+                "group_key": "property"
+            }
+        },
+        "data": {
+            "type": "object",
+            "description": "The data to pass in the request",
+            "ui_properties": {
+                "property_name": "Data",
+                "property_key": "data",
+                "ui_type": "json",
+                "order": 6,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "property"
+            }
+        },
+        "headers": {
+            "type": "object",
+            "description": "The HTTP headers to be added to the request",
+            "ui_properties": {
+                "property_name": "Headers",
+                "property_key": "headers",
+                "ui_type": "json",
+                "order": 6,
+                "spancol": 1,
+                "mandatory": false,
+                "default": "{\n  \"Content-Type\": \"application/json\"\n}",
+                "group_key": "property"
+            }
+        },
+        "response_check": {
+            "type": "string",
+            "description": "A check against the 'requests' response object",
+            "ui_properties": {
+                "property_name": "Response check",
+                "property_key": "response_check",
+                "ui_type": "text",
+                "order": 7,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "response_filter": {
+            "type": "string",
+            "description": "A function allowing you to manipulate the response text",
+            "ui_properties": {
+                "property_name": "Response filter",
+                "property_key": "response_filter",
+                "ui_type": "text",
+                "order": 8,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "extra_options": {
+            "type": "object",
+            "description": "Extra options for the 'requests' library",
+            "ui_properties": {
+                "property_name": "Extra options",
+                "property_key": "extra_options",
+                "ui_type": "json",
+                "order": 19,
+                "spancol": 1,
+                "mandatory": false,
+                "default": "{\n  \"timeout\": \"10\"\n}",
+                "group_key": "settings"
+            }
+        },
+        "log_response": {
+            "type": "boolean",
+            "description": "Log the response",
+            "ui_properties": {
+                "property_name": "Log response",
+                "property_key": "log_response",
+                "ui_type": "checkbox",
+                "order": 10,
+                "spancol": 1,
+                "mandatory": false,
+                "default": false,
+                "group_key": "settings"
+            }
+        },
+        "tcp_keep_alive": {
+            "type": "boolean",
+            "description": "Enable TCP Keep Alive for the connection",
+            "ui_properties": {
+                "property_name": "Tcp keep alive",
+                "property_key": "tcp_keep_alive",
+                "ui_type": "checkbox",
+                "order": 12,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "tcp_keep_alive_idle": {
+            "type": "integer",
+            "description": "The TCP Keep Alive Idle parameter",
+            "ui_properties": {
+                "property_name": "Tcp keep alive idle",
+                "property_key": "tcp_keep_alive_idle",
+                "ui_type": "number",
+                "order": 13,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "tcp_keep_alive_count": {
+            "type": "integer",
+            "description": "The TCP Keep Alive count parameter",
+            "ui_properties": {
+                "property_name": "Tcp keep alive count",
+                "property_key": "tcp_keep_alive_count",
+                "ui_type": "number",
+                "order": 14,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "tcp_keep_alive_interval": {
+            "type": "integer",
+            "description": "The TCP Keep Alive interval parameter",
+            "ui_properties": {
+                "property_name": "Tcp keep alive interval",
+                "property_key": "tcp_keep_alive_interval",
+                "ui_type": "number",
+                "order": 15,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "deferrable": {
+            "type": "boolean",
+            "description": "Run operator in the deferrable mode",
+            "ui_properties": {
+                "property_name": "Defferable",
+                "property_key": "deferrable",
+                "ui_type": "checkbox",
+                "order": 16,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "trigger_rule": {
+            "type": "string",
+            "enum": [
+                "all_success",
+                "all_failed",
+                "all_done",
+                "all_skipped",
+                "one_success",
+                "one_failed",
+                "one_done",
+                "none_failed",
+                "none_failed_min_one_success",
+                "none_skipped",
+                "always"
+            ],
+            "description": "The rule by which to trigger the task instance of the task",
+            "ui_properties": {
+                "property_name": "Trigger rule",
+                "property_key": "trigger_rule",
+                "ui_type": "enum",
+                "order": 5,
+                "spancol": 1,
+                "mandatory": true,
+                "default": "all_success",
+                "group_key": "property"
+            }
+        },
+        "depends_on": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The task IDs that the current task depends on",
+            "ui_properties": {
+                "property_name": "Depends on",
+                "property_key": "depends_on",
+                "ui_type": "auto",
+                "order": 18,
+                "spancol": 1,
+                "mandatory": false,
+                "group_key": "property"
+            }
+        }
+    },
+    "required": [
+        "type",
+        "task_id",
+        "http_conn_id",
+        "endpoint",
+        "method"
+    ]
+}

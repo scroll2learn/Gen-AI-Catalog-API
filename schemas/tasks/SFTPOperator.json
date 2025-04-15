@@ -1,0 +1,156 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "SFTPOperator"
+            ],
+            "description": "Type of the operator",
+            "ui_properties": {
+                "module_name": "Transfer",
+                "color": "#8237E3",
+                "icon": "/assets/flow/Transfer.svg"
+            }
+        },
+        "task_id": {
+            "type": "string",
+            "description": "The task ID",
+            "ui_properties": {
+                "property_name": "Task id",
+                "property_key": "task_id",
+                "ui_type": "text",
+                "order": 1,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "sftp_conn_id": {
+            "type": "string",
+            "description": "The SFTP connection id for establishing a connection to the SFTP server",
+            "ui_properties": {
+                "property_name": "Sftp connection",
+                "property_key": "sftp_conn_id",
+                "ui_type": "dropdown",
+                "order": 2,
+                "mandatory": true,
+                "default": "options[0].value",
+                "endpoint": "{catalog_base_url}/api/v1/environment/connections/{env_id}/sftp_connections",
+                "group_key": "property"
+            }
+        },
+        "sftp_path": {
+            "type": "string",
+            "description": "The SFTP remote path for downloading the file from the SFTP server",
+            "ui_properties": {
+                "property_name": "Sftp path",
+                "property_key": "sftp_path",
+                "ui_type": "text",
+                "order": 3,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "s3_conn_id": {
+            "type": "string",
+            "description": "The S3 connection id for establishing a connection to S3",
+            "ui_properties": {
+                "property_name": "S3 connection",
+                "property_key": "s3_conn_id",
+                "ui_type": "dropdown",
+                "order": 4,
+                "mandatory": true,
+                "default": "options[0].value",
+                "endpoint": "{catalog_base_url}/api/v1/environment/connections/{env_id}/aws_connections",
+                "group_key": "property"
+            }
+        },
+        "s3_bucket": {
+            "type": "string",
+            "description": "The targeted S3 bucket to where the file is uploaded",
+            "ui_properties": {
+                "property_name": "Bucket NAME",
+                "property_key": "s3_bucket",
+                "ui_type": "text",
+                "order": 5,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "s3_key": {
+            "type": "string",
+            "description": "The targeted S3 key for uploading the file to S3",
+            "ui_properties": {
+                "property_name": "S3 file key",
+                "property_key": "s3_key",
+                "ui_type": "text",
+                "order": 6,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "use_temp_file": {
+            "type": "boolean",
+            "description": "If True, copies file first to local, if False streams file from SFTP to S3",
+            "ui_properties": {
+                "property_name": "Use temp file",
+                "property_key": "use_temp_file",
+                "ui_type": "checkbox",
+                "order": 7,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "trigger_rule": {
+            "type": "string",
+            "enum": [
+                "all_success",
+                "all_failed",
+                "all_done",
+                "all_skipped",
+                "one_success",
+                "one_failed",
+                "one_done",
+                "none_failed",
+                "none_failed_min_one_success",
+                "none_skipped",
+                "always"
+            ],
+            "description": "The rule by which to trigger the task instance of the task",
+            "ui_properties": {
+                "property_name": "Trigger rule",
+                "property_key": "trigger_rule",
+                "ui_type": "enum",
+                "order": 8,
+                "mandatory": true,
+                "default": "all_success",
+                "group_key": "property"
+            },
+            "depends_on": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "The task IDs that the current task depends on",
+                "ui_properties": {
+                    "property_name": "Depends on",
+                    "property_key": "depends_on",
+                    "ui_type": "auto",
+                    "order": 9,
+                    "mandatory": false,
+                    "group_key": "property"
+                }
+            }
+        }
+    },
+    "required": [
+        "type",
+        "task_id",
+        "sftp_conn_id",
+        "sftp_path",
+        "s3_conn_id",
+        "s3_bucket",
+        "s3_key"
+    ]
+}

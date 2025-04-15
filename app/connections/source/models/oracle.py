@@ -1,0 +1,12 @@
+from typing import Optional
+from pydantic import BaseModel
+
+class SourceOracle(BaseModel):
+    host: str
+    port: int
+    service_name: Optional[str]  # Oracle uses service_name or SID
+    sid: Optional[str]  # Some setups may require SID instead of service_name
+    username: str
+    password: str
+    db_schema: Optional[str]  
+    source_type: str = "oracle"

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0",
+  "name": "Flow_Json",
+  "description": "Sample Flow",
+  "parameters": [],
+  "type": "object",
+  "properties": {
+      "tasks": {
+          "type": "array",
+          "items": {
+              "oneOf": [
+                  {
+                      "$ref": "tasks/BashOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/EmailOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/EmrAddStepsOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/EmrCreateJobFlowOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/EmrTerminateJobFlowOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/HttpSensor.json"
+                  },
+                  {
+                      "$ref": "tasks/S3KeySensor.json"
+                  },
+                  {
+                      "$ref": "tasks/SFTPOperator.json"
+                  },
+                  {
+                      "$ref": "tasks/SimpleHttpOperator.json"
+                  }
+              ]
+          }
+      }
+  },
+  "required": [
+      "tasks"
+  ]
+}

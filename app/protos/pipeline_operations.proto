@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package pipeline_operations;
+
+service PipelineOperationsService {
+    rpc StartPipeline(StartPipelineRequest) returns (PipelineResponse);
+    rpc StopPipeline(StopPipelineRequest) returns (PipelineResponse);
+    rpc NextCheckpoint(NextCheckpointRequest) returns (PipelineResponse);
+}
+
+message StartPipelineRequest {
+    string pipeline_name = 1;
+    string pipeline_json = 2;
+    string mode = 3;
+    repeated string checkpoints = 4;
+}
+
+message StopPipelineRequest {
+    string pipeline_name = 1;
+}
+
+message NextCheckpointRequest {
+    string pipeline_name = 1;
+}
+
+message PipelineResponse {
+    string message = 1;
+}

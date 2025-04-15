@@ -1,0 +1,200 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "EmailOperator"
+            ],
+            "description": "Type of the operator",
+            "ui_properties": {
+                "module_name": "Alert",
+                "color": "#C049C0",
+                "icon": "/assets/flow/Notify.svg"
+            }
+        },
+        "task_id": {
+            "type": "string",
+            "description": "The task ID",
+            "ui_properties": {
+                "property_name": "Task id",
+                "property_key": "task_id",
+                "ui_type": "text",
+                "order": 1,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "to": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of emails to send the email to",
+            "ui_properties": {
+                "property_name": "To",
+                "property_key": "to",
+                "ui_type": "list[emailids]",
+                "order": 2,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "subject": {
+            "type": "string",
+            "description": "Subject line for the email",
+            "ui_properties": {
+                "property_name": "Subject",
+                "property_key": "subject",
+                "ui_type": "text",
+                "order": 3,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "html_content": {
+            "type": "string",
+            "description": "Content of the email, HTML markup is allowed",
+            "ui_properties": {
+                "property_name": "Html content",
+                "property_key": "html_content",
+                "ui_type": "textbox",
+                "language": "plaintext",
+                "spancol": 2,
+                "order": 4,
+                "mandatory": true,
+                "group_key": "property"
+            }
+        },
+        "files": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "File names to attach in email",
+            "ui_properties": {
+                "property_name": "Files",
+                "property_key": "files",
+                "ui_type": "list[string]",
+                "order": 5,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "cc": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of recipients to be added in CC field",
+            "ui_properties": {
+                "property_name": "Cc",
+                "property_key": "cc",
+                "ui_type": "list[emailids]",
+                "order": 6,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "bcc": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of recipients to be added in BCC field",
+            "ui_properties": {
+                "property_name": "Bcc",
+                "property_key": "bcc",
+                "ui_type": "list[emailids]",
+                "order": 7,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "mime_subtype": {
+            "type": "string",
+            "description": "MIME sub content type",
+            "ui_properties": {
+                "property_name": "Mime subtype",
+                "property_key": "mime_subtype",
+                "ui_type": "text",
+                "order": 8,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "mime_charset": {
+            "type": "string",
+            "description": "Character set parameter added to the Content-Type header",
+            "ui_properties": {
+                "property_name": "Mime charset",
+                "property_key": "mime_charset",
+                "ui_type": "text",
+                "order": 9,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "custom_headers": {
+            "type": "object",
+            "description": "Additional headers to add to the MIME message",
+            "ui_properties": {
+                "property_name": "Custom headers",
+                "property_key": "custom_headers",
+                "ui_type": "json",
+                "order": 10,
+                "mandatory": false,
+                "group_key": "settings"
+            }
+        },
+        "trigger_rule": {
+            "type": "string",
+            "enum": [
+                "all_success",
+                "all_failed",
+                "all_done",
+                "all_skipped",
+                "one_success",
+                "one_failed",
+                "one_done",
+                "none_failed",
+                "none_failed_min_one_success",
+                "none_skipped",
+                "always"
+            ],
+            "description": "The rule by which to trigger the task instance of the task",
+            "ui_properties": {
+                "property_name": "Trigger rule",
+                "property_key": "trigger_rule",
+                "ui_type": "enum",
+                "order": 11,
+                "mandatory": true,
+                "default": "all_success",
+                "group_key": "property"
+            }
+        },
+        "depends_on": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The task IDs that the current task depends on",
+            "ui_properties": {
+                "property_name": "Depends on",
+                "property_key": "depends_on",
+                "ui_type": "auto",
+                "order": 12,
+                "mandatory": false,
+                "group_key": "property"
+            }
+        }
+    },
+    "required": [
+        "type",
+        "task_id",
+        "to",
+        "subject",
+        "html_content"
+    ]
+}

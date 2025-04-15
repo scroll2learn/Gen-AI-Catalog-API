@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package data;
+
+service DataService {
+  rpc GetTransformationOutput (TransformationRequest) returns (TransformationOutputResponse);
+  rpc GetTransformationOutputCounts(GetTransformationOutputCountsRequest) returns (GetTransformationOutputCountsResponse);
+}
+
+message TransformationRequest {
+  string pipeline_name = 1;
+  string transformation_name = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  repeated SortColumn sort_columns = 5;
+}
+
+message SortColumn {
+  string name = 1;
+  string order = 2; // "asc" or "desc"
+}
+
+message Row {
+  map<string, string> data = 1;
+}
+
+message Output {
+  string name = 1;
+  repeated Row rows = 2;
+}
+
+message TransformationOutputResponse {
+  string transformation_name = 1;
+  repeated Output outputs = 2;
+}
+
+message GetTransformationOutputCountsRequest {
+  string pipeline_name = 1;
+}
+
+message TransformationOutputCount {
+  string transformation_name = 1;
+  int64 row_count = 2;
+}
+
+message GetTransformationOutputCountsResponse {
+  repeated TransformationOutputCount transformation_output_counts = 1;
+}

@@ -1,0 +1,173 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "EmrAddStepsOperator"
+            ],
+            "description": "Submit Jobs to the EMR cluster",
+            "ui_properties": {
+                "module_name": "AWS",
+                "color": "#0FBAEF",
+                "icon": "/assets/flow/EMR.svg"
+            }
+        },
+        "task_id": {
+            "type": "string",
+            "description": "The task ID",
+            "ui_properties": {
+                "property_name": "Task ID",
+                "property_key": "task_id",
+                "ui_type": "text",
+                "order": 1,
+                "mandatory": true,
+                "group_key": "property"
+            },
+            "default": "create_emr_cluster"
+        },
+        "aws_conn_id": {
+            "type": "string",
+            "description": "AWS connection ID",
+            "ui_properties": {
+                "property_name": "AWS Connection ID",
+                "property_key": "aws_conn_id",
+                "ui_type": "dropdown",
+                "order": 2,
+                "mandatory": true,
+                "endpoint": "{catalog_base_url}/api/v1/environment/connections/{env_id}/aws_connections",
+                "default": "options[0].value",
+                "group_key": "property"
+            },
+            "default": "aws_default"
+        },
+        "pipeline_name": {
+            "type": "string",
+            "description": "The pipeline name",
+            "ui_properties": {
+                "property_name": "Pipeline Name",
+                "property_key": "pipeline_name",
+                "ui_type": "dropdown",
+                "order": 3,
+                "mandatory": true,
+                "default": "options[0].value",
+                "endpoint": "{catalog_base_url}/api/v1/pipeline/list",
+                "group_key": "property"
+            }
+        },
+        "parameters": {
+            "type": "array",
+            "description": "A list of parameter objects",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "The key for the parameter"
+                    },
+                    "value": {
+                        "type": [
+                            "string",
+                            "integer",
+                            "boolean"
+                        ],
+                        "description": "The value for the parameter"
+                    }
+                },
+                "required": [
+                    "key",
+                    "value"
+                ]
+            },
+            "ui_properties": {
+                "property_name": "Parameters",
+                "property_key": "parameters",
+                "ui_type": "list",
+                "order": 4,
+                "mandatory": true,
+                "default": [
+                    {
+                        "key": "cluster_creation_task_id",
+                        "value": "my-emr-cluster"
+                    }
+                ],
+                "group_key": "parameters"
+            }
+        },
+        "monitor_steps": {
+            "type": "boolean",
+            "description": "Enable step monitoring (handled by backend)",
+            "ui_properties": {
+                "property_name": "Monitor Steps",
+                "property_key": "monitor_steps",
+                "ui_type": "checkbox",
+                "order": 5,
+                "mandatory": false,
+                "default": true,
+                "group_key": "settings"
+            }
+        },
+        "poke_interval": {
+            "type": "integer",
+            "description": "Interval for polling the step status",
+            "ui_properties": {
+                "property_name": "Poke Interval",
+                "property_key": "poke_interval",
+                "ui_type": "number",
+                "order": 6,
+                "mandatory": false,
+                "default": 30,
+                "group_key": "settings"
+            }
+        },
+        "trigger_rule": {
+            "type": "string",
+            "enum": [
+                "all_success",
+                "all_failed",
+                "all_done",
+                "all_skipped",
+                "one_success",
+                "one_failed",
+                "one_done",
+                "none_failed",
+                "none_failed_min_one_success",
+                "none_skipped",
+                "always"
+            ],
+            "description": "The rule by which to trigger the task instance of the task",
+            "ui_properties": {
+                "property_name": "Trigger rule",
+                "property_key": "trigger_rule",
+                "ui_type": "enum",
+                "order": 7,
+                "mandatory": true,
+                "group_key": "property",
+                "default": "all_success"
+            }
+        },
+        "depends_on": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The task IDs that the current task depends on",
+            "ui_properties": {
+                "property_name": "Depends on",
+                "property_key": "depends_on",
+                "ui_type": "auto",
+                "order": 8,
+                "group_key": "property",
+                "mandatory": false
+            }
+        }
+    },
+    "required": [
+        "type",
+        "task_id",
+        "aws_conn_id",
+        "pipeline_name",
+        "parameters"
+    ]
+}

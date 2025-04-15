@@ -1,0 +1,59 @@
+# Pull official base image
+FROM python:3.11-slim-bullseye
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install system dependencies including PostgreSQL and Git
+RUN apt-get update \
+  && apt-get install -y wget gnupg2 software-properties-common git \
+  && echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && apt-get update \
+  && apt-get -y install netcat gcc postgresql-17 postgresql-server-dev-17 postgresql-17-pgvector  # Install pgvector extension \
+  && apt-get clean
+
+# Copy and install Python dependencies
+COPY ./requirements.txt .
+
+ARG TOKEN
+ENV TOKEN=${TOKEN}
+
+RUN apt-get update && apt-get install -y git && apt-get clean
+
+# Clone the private repo manually
+RUN git clone https://${TOKEN}@github.com/bh-ai/bh-cluster-utils.git /usr/src/app/cluster_utils_new
+
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Copy additional application configurations
+COPY superset_config.py /app/pythonpath_deps/
+
+# Add application files
+COPY . .
+
+# Set Python path
+ENV PYTHONPATH="/usr/src/app"
+
+# Set environment variables
+ENV AWS_ACCESS_KEY_ID=
+ENV AWS_SECRET_ACCESS_KEY=
+ENV AWS_REGION=us-east-1
+ENV DATABASE=demo_bronze
+ENV OUTPUT_BUCKET=s3://bh-athena-results/athina_run/
+
+# Make start.sh executable
+RUN chmod +x /usr/src/app/start.sh
+
+# Expose necessary ports
+EXPOSE 8011
+EXPOSE 8088
+
+# Start the application
+CMD /bin/bash /usr/src/app/start.sh
